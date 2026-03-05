@@ -1,0 +1,10 @@
+stages:
+  - test
+
+validate:
+  stage: test
+  image: node:20-alpine
+  script:
+    - echo "Component template validated"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"

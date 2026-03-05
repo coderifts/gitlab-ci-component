@@ -1,0 +1,23 @@
+spec:
+  inputs:
+    api_key:
+      description: "CodeRifts API key (from coderifts.com/settings)"
+    base_branch:
+      default: "main"
+      description: "Base branch to compare against"
+    fail_on_breaking:
+      default: "true"
+      description: "Fail the pipeline on breaking changes"
+
+---
+
+coderifts-check:
+  stage: test
+  image: node:20-alpine
+  script:
+    - npm install -g coderifts@latest
+    - coderifts check --base $[[ inputs.base_branch ]] --fail $[[ inputs.fail_on_breaking ]]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  variables:
+    CODERIFTS_API_KEY: $[[ inputs.api_key ]]
