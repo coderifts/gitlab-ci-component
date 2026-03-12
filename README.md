@@ -58,11 +58,11 @@ api-contract-check:
     CODERIFTS_API_KEY: $CODERIFTS_API_KEY
   script:
     - |
-      curl -sf -X POST https://app.coderifts.com/api/diff \
+      curl -sf -X POST https://app.coderifts.com/api/v1/diff \
         -H "Authorization: Bearer $CODERIFTS_API_KEY" \
         -H "Content-Type: application/json" \
-        -d "{\"base\": \"$CI_MERGE_REQUEST_TARGET_BRANCH_NAME:api/openapi.yaml\",
-             \"head\": \"api/openapi.yaml\"}"
+        -d "{\"old_spec\": \"$CI_MERGE_REQUEST_TARGET_BRANCH_NAME:api/openapi.yaml\",
+             \"new_spec\": \"api/openapi.yaml\"}"
   rules:
     - if: $CI_MERGE_REQUEST_IID
 ```
