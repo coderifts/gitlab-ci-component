@@ -1,5 +1,9 @@
 # CodeRifts GitLab CI Component
 
+> ⚠️ **Beta**: This GitLab CI component is not yet registered in the GitLab Catalog.
+> For production use, please use the [GitHub App](https://github.com/apps/coderifts) instead.
+
+
 [![License: Proprietary](https://img.shields.io/badge/license-Proprietary-red.svg)](https://coderifts.com/terms/)
 
 Official GitLab CI/CD Catalog component for [CodeRifts](https://coderifts.com). Detects breaking API changes on every Merge Request, scores risk, and enforces governance policies.
