@@ -12,6 +12,11 @@ Works with GitHub, GitLab, Bitbucket, and any CI/CD pipeline.
 
 ## Quick Start
 
+> Beta: this component is not registered in the GitLab CI/CD Catalog yet and the
+> `gitlab.com/coderifts/` namespace does not exist, so the `include` below will
+> not resolve. Until it ships, use the live [REST API](#alternative-rest-api)
+> path below (or the GitHub App).
+
 ```yaml
 include:
   - component: gitlab.com/coderifts/gitlab-ci-component/coderifts@main
