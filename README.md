@@ -8,7 +8,6 @@
 
 Official GitLab CI/CD Catalog component for [CodeRifts](https://coderifts.com). Detects breaking API changes on every Merge Request, scores risk, and enforces governance policies.
 
-Works with GitHub, GitLab, Bitbucket, and any CI/CD pipeline.
 
 ## Quick Start
 
