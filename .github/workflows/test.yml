@@ -1,0 +1,14 @@
+name: test
+on:
+  push:
+  pull_request:
+jobs:
+  adapter-against-cli:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      # The template script runs against the published CLI tarball; a subcommand the CLI does not expose fails here.
+      - run: node --test test/*.test.js

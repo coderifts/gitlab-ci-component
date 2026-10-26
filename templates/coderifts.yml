@@ -8,15 +8,32 @@ spec:
     fail_on_breaking:
       default: "true"
       description: "Fail the pipeline on breaking changes"
+    spec_path:
+      default: "api/openapi.yaml"
+      description: "Contract file to compare, relative to the repository root"
 
 ---
 
+# 2026-10-25: the job ran `coderifts check`, a subcommand no released CLI has (8.8.0: "error: unknown
+# command 'check'", exit 1). It now runs `coderifts diff <base spec> <head spec>`, with --ci when
+# fail_on_breaking is "true" (exit 1 on a break, exit 2 when the analysis could not decide).
 coderifts-check:
   stage: test
   image: node:20-alpine
   script:
-    - npm install -g coderifts@latest
-    - coderifts check --base $[[ inputs.base_branch ]] --fail $[[ inputs.fail_on_breaking ]]
+    - apk add --no-cache git >/dev/null
+    - command -v coderifts >/dev/null 2>&1 || npm install -g coderifts@latest
+    - |
+      set -eu
+      SPEC="$[[ inputs.spec_path ]]"
+      BASE="$[[ inputs.base_branch ]]"
+      if [ ! -f "$SPEC" ]; then echo "CodeRifts: $SPEC is not in this checkout — set the spec_path input." >&2; exit 1; fi
+      git fetch --quiet --depth=1 origin "$BASE" 2>/dev/null || true
+      BASE_SPEC="$(mktemp)"
+      if ! git show "origin/$BASE:$SPEC" > "$BASE_SPEC" 2>/dev/null && ! git show "$BASE:$SPEC" > "$BASE_SPEC" 2>/dev/null; then
+        echo "CodeRifts: $SPEC does not exist on $BASE — a new contract, nothing to compare against." >&2; exit 0
+      fi
+      if [ "$[[ inputs.fail_on_breaking ]]" = "true" ]; then coderifts diff "$BASE_SPEC" "$SPEC" --ci; else coderifts diff "$BASE_SPEC" "$SPEC"; fi
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   variables:

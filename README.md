@@ -34,7 +34,8 @@ include:
 |---|---|---|---|
 | `api_key` | Yes | — | Your CodeRifts API key |
 | `base_branch` | No | `main` | Branch to compare against |
-| `fail_on_breaking` | No | `false` | Fail pipeline on breaking changes |
+| `fail_on_breaking` | No | `true` | Fail pipeline on breaking changes (`coderifts diff --ci`: exit 1 on a break, exit 2 when the analysis could not decide) |
+| `spec_path` | No | `api/openapi.yaml` | Contract file to compare, relative to the repository root; its version on `origin/<base_branch>` is the base |
 
 ## Setup
 

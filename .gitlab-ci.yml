@@ -3,8 +3,9 @@ stages:
 
 validate:
   stage: test
-  image: node:20-alpine
+  # node:20 (Debian) carries git; the test runs the template's script against the published CLI tarball.
+  image: node:20
   script:
-    - echo "Component template validated"
+    - node --test test/*.test.js
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
